@@ -14,11 +14,16 @@ server:
 #    basedir:
 
 spring:
-  datasource:
-    url: "r2dbc:mysql://localhost:3306/test8_001?characterEncoding=utf8"
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/test8_001?characterEncoding=utf8
     username: ${datasource.username}
     password: ${datasource.password}
-    driver-class-name: "com.mysql.cj.jdbc.Driver"
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/test8_001?characterEncoding=utf8
+    username: ${datasource.username}
+    password: ${datasource.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   profiles:
     active: "dev"
@@ -39,20 +44,19 @@ spring:
     open-in-view: false
 
 #    show-sql: true
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: false
 
-#    hibernate:
-#      ddl-auto: "none"
-#      use-new-id-generator-mappings: false
-#
-#    properties:
-#      hibernate:
-#        generate_statistics: true
-#        current_session_context_class: "thread"
-#        jdbc:
-#          batch_size: 10
-#        format_sql: true
-#        connection:
-#          autocommit: false
+      properties:
+        hibernate:
+          generate_statistics: true
+          current_session_context_class: "thread"
+          jdbc:
+            batch_size: 10
+          format_sql: true
+          connection:
+            autocommit: false
 
   flyway:
     enabled: false
@@ -100,6 +104,12 @@ spring:
     username: ${mail.username}
     password: ${mail.password}
     default-encoding: "UTF-8"
+    properties:
+      mail:
+        smtp:
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
 
   jackson:
     serialization:
@@ -120,13 +130,18 @@ spring:
       chain:
         cache: false
 
-  thymeleaf:
-    render-hidden-markers-before-checkboxes: true
-    cache: false
+#  thymeleaf:
+#    render-hidden-markers-before-checkboxes: true
+#    cache: false
+#    mode: HTML
 
   devtools:
     restart:
       enabled: true
+
+  mustache:
+    enabled: true
+    cache: false
 
 #  h2:
 #    console:
@@ -138,7 +153,10 @@ logging:
   level:
     ROOT: INFO
     org:
-      springframework.web: DEBUG
+      springframework:
+        web: DEBUG
+        data:
+          r2dbc: DEBUG
       hibernate: INFO
 
 jwt:
