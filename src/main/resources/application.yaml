@@ -1,0 +1,151 @@
+server:
+  address: localhost
+  port: 9000
+  compression:
+    enabled: true
+  http2:
+    enabled: true
+
+  error:
+    whitelabel:
+      enabled: false
+
+#  tomcat:
+#    basedir:
+
+spring:
+  datasource:
+    url: "r2dbc:mysql://localhost:3306/test8_001?characterEncoding=utf8"
+    username: ${datasource.username}
+    password: ${datasource.password}
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+
+  profiles:
+    active: "dev"
+
+  jpa:
+    database-platform: "org.hibernate.dialect.MySQL8Dialect"
+    generate-ddl: true
+
+    properties:
+      hibernate:
+        default_batch_fetch_size: 20
+        jdbc:
+          batch_size: 10
+          order_inserts: true
+          order_updates: true
+
+# решает ошибку ClassCastException EntityManagerHolder
+    open-in-view: false
+
+#    show-sql: true
+
+#    hibernate:
+#      ddl-auto: "none"
+#      use-new-id-generator-mappings: false
+#
+#    properties:
+#      hibernate:
+#        generate_statistics: true
+#        current_session_context_class: "thread"
+#        jdbc:
+#          batch_size: 10
+#        format_sql: true
+#        connection:
+#          autocommit: false
+
+  flyway:
+    enabled: false
+#    change-log: classpath:db.changelog/db.changelog-master.xml
+#    url: jdbc:mysql://localhost:3306/test7_001?characterEncoding=utf8
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    user: ${datasource.username}
+#    password: ${datasource.password}
+
+  servlet:
+    multipart:
+      enabled: true
+      location: ${java.io.tmpdir}
+      max-file-size: 5MB
+      max-request-size: 5MB
+      file-size-threshold: 0
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${google.client-id}
+            client-secret: ${google.client-secret}
+            scope:
+              - openid
+              - profile
+              - email
+#            clientAuthenticationScheme: form
+#            accessTokenUri: "https://www.googleapis.com/oauth2/v4/token"
+#            userAuthorizationUri: "https://accounts.google.com/o/oauth2/v2/auth"
+#            resource:
+#              userInfoUri: "https://wwwgoogleapiscom/oauth2/v3/userinfo"
+#              preferTokenInfo: true
+
+          github:
+            client-id: ${github.client-id}
+            client-secret: ${github.client-secret}
+
+
+  mail:
+    protocol: smtp
+    host: "smtp.yandex.ru"
+    port: 587
+    username: ${mail.username}
+    password: ${mail.password}
+    default-encoding: "UTF-8"
+
+  jackson:
+    serialization:
+      indent-output: true
+      write_dates_as_timestamps: false
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+
+  web:
+    resources:
+#      включаем css и проч.
+      add-mappings: true
+      cache:
+        cachecontrol:
+          no-cache: true
+        period: 0
+      chain:
+        cache: false
+
+  thymeleaf:
+    render-hidden-markers-before-checkboxes: true
+    cache: false
+
+  devtools:
+    restart:
+      enabled: true
+
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+
+logging:
+  config: "classpath:log4j2.properties"
+  level:
+    ROOT: INFO
+    org:
+      springframework.web: DEBUG
+      hibernate: INFO
+
+jwt:
+  header: "Authorization"
+  secret: "authsecret"
+#  expiration: 3600000
+#  refresh: 86400000
+  ## For test
+  expiration: 60000
+  refresh: 120000

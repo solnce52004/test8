@@ -1,0 +1,130 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.7'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'war'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	//starter-web
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	//security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'io.jsonwebtoken:jjwt'
+
+	//webflux
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	//mail
+//	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	//aop
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	runtimeOnly 'org.aspectj:aspectjweaver'
+	runtimeOnly 'org.aspectj:aspectjrt'
+
+	//log
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+	modules {
+		module("org.springframework.boot:spring-boot-starter-logging") {
+			replacedBy("org.springframework.boot:spring-boot-starter-log4j2", "Use Log4j2 instead of Logback")
+		}
+	}
+
+	//db
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+	//mysql
+	runtimeOnly 'dev.miku:r2dbc-mysql'
+	runtimeOnly 'mysql:mysql-connector-java'
+	//h2
+//	runtimeOnly 'com.h2database:h2'
+//	runtimeOnly 'io.r2dbc:r2dbc-h2'
+	//mongodb
+//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+
+	//validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	//mustache
+	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+
+	//flyway
+	implementation 'org.flywaydb:flyway-core'
+
+	//batch
+//	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+	//redis
+//	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+
+	//integration
+//	implementation 'org.springframework.boot:spring-boot-starter-integration'
+	implementation 'org.springframework.integration:spring-integration-jdbc'
+	implementation 'org.springframework.integration:spring-integration-jpa'
+//	implementation 'org.springframework.integration:spring-integration-mail'
+//	implementation 'org.springframework.integration:spring-integration-mongodb'
+	implementation 'org.springframework.integration:spring-integration-r2dbc'
+//	implementation 'org.springframework.integration:spring-integration-redis'
+	implementation 'org.springframework.integration:spring-integration-security'
+	implementation 'org.springframework.integration:spring-integration-webflux'
+
+	//lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	//devtools
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	//batch logging
+	implementation 'net.ttddyy:datasource-proxy'
+
+	//test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+//	testImplementation 'org.springframework.batch:spring-batch-test'
+	testImplementation 'org.springframework.integration:spring-integration-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	//uploads
+//	implementation 'commons-fileupload:commons-fileupload'
+
+	//bootstrap
+	implementation 'org.webjars:bootstrap'
+
+	//guava
+	implementation 'com.google.guava:guava'
+
+//	//swagger2
+//	implementation 'io.springfox:springfox-swagger2'
+//	implementation 'io.springfox:springfox-boot-starter'
+//	implementation 'io.springfox:springfox-swagger-ui'
+//	implementation 'io.springfox:springfox-bean-validators'
+}
+
+test {
+	useJUnitPlatform()
+}
