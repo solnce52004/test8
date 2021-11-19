@@ -18,12 +18,14 @@ spring:
     url: r2dbc:mysql://localhost:3306/test8_001?characterEncoding=utf8
     username: ${datasource.username}
     password: ${datasource.password}
+    properties:
+      database: test8_001
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/test8_001?characterEncoding=utf8
-    username: ${datasource.username}
-    password: ${datasource.password}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  #  datasource:
+#    url: jdbc:mysql://localhost:3306/test8_001?characterEncoding=utf8
+#    username: ${datasource.username}
+#    password: ${datasource.password}
+#    driver-class-name: com.mysql.cj.jdbc.Driver
 
   profiles:
     active: "dev"
@@ -31,32 +33,9 @@ spring:
   jpa:
     database-platform: "org.hibernate.dialect.MySQL8Dialect"
     generate-ddl: true
-
-    properties:
-      hibernate:
-        default_batch_fetch_size: 20
-        jdbc:
-          batch_size: 10
-          order_inserts: true
-          order_updates: true
-
 # решает ошибку ClassCastException EntityManagerHolder
     open-in-view: false
-
 #    show-sql: true
-    hibernate:
-      ddl-auto: none
-      use-new-id-generator-mappings: false
-
-      properties:
-        hibernate:
-          generate_statistics: true
-          current_session_context_class: "thread"
-          jdbc:
-            batch_size: 10
-          format_sql: true
-          connection:
-            autocommit: false
 
   flyway:
     enabled: false

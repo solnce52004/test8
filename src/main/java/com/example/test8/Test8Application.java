@@ -1,4 +1,4 @@
-package com.example.test8.config;
+package com.example.test8;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,7 +9,6 @@ import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 
 @SpringBootApplication(scanBasePackages = "com.*")
 //@ComponentScan(basePackages = "com.*")
-//@EntityScan(basePackages = "com.*")
 @EnableR2dbcRepositories(basePackages = "com.*")
 @PropertySource(value = {"classpath:application.yaml"})
 

@@ -23,6 +23,7 @@ dependencies {
 	//starter-web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+//	implementation 'org.springframework.boot:spring-boot-starter-jetty:2.5.7'
 
 	//security
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -49,14 +50,13 @@ dependencies {
 	}
 
 	//db
-	implementation 'org.springframework.boot:spring-boot-starter-batch'
 	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
 	//mysql
 	runtimeOnly 'dev.miku:r2dbc-mysql'
-	runtimeOnly 'mysql:mysql-connector-java'
+//	runtimeOnly 'mysql:mysql-connector-java'
 	//h2
 //	runtimeOnly 'com.h2database:h2'
 //	runtimeOnly 'io.r2dbc:r2dbc-h2'
