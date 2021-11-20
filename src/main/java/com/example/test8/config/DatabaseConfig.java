@@ -20,8 +20,7 @@ import org.springframework.r2dbc.core.DatabaseClient;
 @EnableR2dbcRepositories(basePackages = "com.example.test8.repo")
 @PropertySource(value = {"classpath:application.yaml"})
 
-public class DatabaseConfig
-        extends AbstractR2dbcConfiguration {
+public class DatabaseConfig extends AbstractR2dbcConfiguration {
     @Value("${server.address}")
     private String host;
 

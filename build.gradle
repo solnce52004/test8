@@ -22,8 +22,8 @@ repositories {
 dependencies {
 	//starter-web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-//	implementation 'org.springframework.boot:spring-boot-starter-jetty:2.5.7'
+//	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	implementation 'org.springframework.boot:spring-boot-starter-jetty:2.5.7'
 
 	//security
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
