@@ -42,3 +42,4 @@ src/main/.DS_Store
 src/test/.DS_Store
 
 /logs/
+/lib/

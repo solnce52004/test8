@@ -3,16 +3,19 @@ package com.example.test8.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
 
-@Table(name = "user_messages")
+//!!!!! это решает проблему определения репозитория!!!!
+@org.springframework.data.relational.core.mapping.Table("user_messages")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class UserMessage {
+public class UserMessage implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     private Long id;
     private String text;
