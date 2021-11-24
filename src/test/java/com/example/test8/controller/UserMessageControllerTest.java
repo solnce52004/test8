@@ -53,7 +53,7 @@ class UserMessageControllerTest {
 
         webTestClient
                 .get()
-                .uri("/message/" + msgId)
+                .uri("/message/{msgId}", msgId)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk();
@@ -83,9 +83,9 @@ class UserMessageControllerTest {
 
         webTestClient
                 .put()
-                .uri("/message/" + msgId)
-                .accept(MediaType.APPLICATION_JSON)
+                .uri("/message/{msgId}", msgId)
                 .body(Mono.just(msg), UserMessage.class)
+                .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk();
     }
@@ -100,7 +100,7 @@ class UserMessageControllerTest {
 
         webTestClient
                 .delete()
-                .uri("/message/" + msgId)
+                .uri("/message/{msgId}", msgId)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk();

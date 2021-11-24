@@ -15,7 +15,7 @@ server:
 
 spring:
   r2dbc:
-    url: "r2dbc:mysql://localhost:3306/test8_001?characterEncoding=utf8&amp;serverTimezone=UTC"
+    url: r2dbc:mysql://localhost:3306/test8_001?characterEncoding=utf8&serverTimezone=UTC
     username: ${datasource.username}
     password: ${datasource.password}
     properties:
@@ -32,28 +32,11 @@ spring:
   profiles:
     active: "dev"
 
-#  jpa:
-#    database-platform: "org.hibernate.dialect.MySQL8Dialect"
-#    generate-ddl: true
-# решает ошибку ClassCastException EntityManagerHolder
-#    open-in-view: false
-#    show-sql: true
-
   flyway:
     enabled: false
-#    change-log: classpath:db.changelog/db.changelog-master.xml
-#    url: jdbc:mysql://localhost:3306/test7_001?characterEncoding=utf8
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/test8_001?characterEncoding=utf8&serverTimezone=UTC
 #    user: ${datasource.username}
 #    password: ${datasource.password}
-
-#  servlet:
-#    multipart:
-#      enabled: true
-#      location: ${java.io.tmpdir}
-#      max-file-size: 5MB
-#      max-request-size: 5MB
-#      file-size-threshold: 0
 
   security:
     oauth2:
