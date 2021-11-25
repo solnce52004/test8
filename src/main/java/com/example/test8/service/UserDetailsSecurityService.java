@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
-public class UserSecurityService implements ReactiveUserDetailsService {
+public class UserDetailsSecurityService implements ReactiveUserDetailsService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UserSecurityService(UserRepository userRepository) {
+    public UserDetailsSecurityService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

@@ -127,12 +127,12 @@ logging:
 
 jwt:
   header: "Authorization"
-  secret: "authsecret"
-#  expiration: 3600000
-#  refresh: 86400000
+  secret: "auth-secret-very-very-very-very-very-very-very-very-3600000-86400000"
+  expiration: 3600000
+  refresh: 86400000
   ## For test
-  expiration: 60000
-  refresh: 120000
+#  expiration: 60000
+#  refresh: 120000
 
 springfox:
   documentation:

@@ -6,30 +6,67 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script>
+        var token = '';
+    </script>
 </head>
 <body>
-<form
-    onsubmit="
+<div>
+    <form method="POST"
+          onsubmit="
      fetch(
             '/login',
             {
               method: 'POST',
-              headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                    },
+                      headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+              body: `username=${this.username.value}&password=${this.password.value}`
 
-              body: JSON.stringify({
-                  'username': `${this.username.value}`,
-                  'password': `${this.password.value}`,
-              })
-        });
+              // headers: {
+              //      // 'Content-type': 'application/x-www-form-urlencoded'
+              //       'Accept': 'application/json',
+              //       'Content-Type': 'application/json'
+              //       },
+              //
+              // body: JSON.stringify({
+              //     'username': `${this.username.value}`,
+              //     'password': `${this.password.value}`,
+              // })
+        })
+        .then(resp => resp.text())
+        .then(t => token = t);
+
+    return false;
     "
->
-    <input type="text" name="username" />
-    <input type="password" name="password" />
-    <input type="submit" />
-</form>
+    >
+        <input type="text" name="username" />
+        <input type="password" name="password" />
+        <input type="submit" />
+    </form>
+</div>
+<br/>
+<div>
+    <input type="button" value="message for USER" onclick="
+fetch(
+    '/message',
+    {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+).then(resp => resp.json()).then(console.log)
+">
+
+    <input type="button" value="/re/message for ADMIN" onclick="
+fetch(
+    '/re/message',
+    {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+).then(resp => resp.json()).then(console.log)
+">
+</div>
 
 </body>
 </html>

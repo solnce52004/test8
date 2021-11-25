@@ -1,6 +1,7 @@
 package com.example.test8.controller;
 
-import com.example.test8.config.Token;
+import com.example.test8.config.client.WebClientUtils;
+import com.example.test8.dto.ExternalTokenDTO;
 import com.example.test8.entity.UserExternal;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
@@ -10,11 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 
@@ -25,15 +24,16 @@ import java.util.HashMap;
 @AllArgsConstructor
 
 public class IntegrationController {
-    private final WebClient baseWebClient;
+    private final WebClientUtils webClientUtils;
 
-    private WebClient webClient() {
+    public WebClient baseWebClient() {
         return WebClient
                 .builder()
-                .baseUrl("http://localhost:8080")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .filter(logRequest())
-                .filter(logResponseStatus())
+                .filter(webClientUtils.errorHandlingFilter())
+                .filter(webClientUtils.logRequest())
+                .filter(webClientUtils.logResponseStatus())
+                .baseUrl("http://localhost:8080")
                 .build();
     }
 
@@ -45,16 +45,16 @@ public class IntegrationController {
     }
 
     private Flux<UserExternal> getUserExternalFlux(String uri) {
-        return baseWebClient
+        return baseWebClient()
                 .post()
                 .uri("/api/v1/auth/login")
                 .body(BodyInserters.fromValue(getCredentials()))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(Token.class)
-                .map(Token::getToken)
+                .bodyToMono(ExternalTokenDTO.class)
+                .map(ExternalTokenDTO::getToken)
                 .flatMapMany(
-                        token -> webClient()
+                        token -> baseWebClient()
                                 .get()
                                 .uri(uri)
                                 .header("Authorization", "Bearer " + token)
@@ -76,30 +76,6 @@ public class IntegrationController {
         return getUserExternalFlux("/api/v1/users/" + id);
     }
 
-    ///////////
-    private ExchangeFilterFunction logRequest() {
-        return ExchangeFilterFunction.ofRequestProcessor(
-                clientRequest -> {
-                    log.info("Request: {} {}", clientRequest.method(), clientRequest.url());
-
-                    clientRequest
-                            .headers()
-                            .forEach((name, values) -> values
-                                    .forEach(value -> log.info("{}={}", name, value))
-                            );
-                    return Mono.just(clientRequest);
-                }
-        );
-    }
-
-    private ExchangeFilterFunction logResponseStatus() {
-        return ExchangeFilterFunction.ofResponseProcessor(
-                clientResponse -> {
-                    log.info("Response Status {}", clientResponse.statusCode());
-                    return Mono.just(clientResponse);
-                }
-        );
-    }
 
     ///////////
     @ExceptionHandler(WebClientResponseException.class)
