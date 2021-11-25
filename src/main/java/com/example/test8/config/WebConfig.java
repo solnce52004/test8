@@ -3,20 +3,21 @@ package com.example.test8.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.web.reactive.config.EnableWebFlux;
+import org.springframework.web.reactive.config.ViewResolverRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.result.view.ViewResolver;
+import org.thymeleaf.spring5.ISpringWebFluxTemplateEngine;
+import org.thymeleaf.spring5.SpringWebFluxTemplateEngine;
+import org.thymeleaf.spring5.view.reactive.ThymeleafReactiveViewResolver;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templateresolver.UrlTemplateResolver;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
-
-import java.util.HashMap;
 
 @Configuration
 @EnableWebFlux
@@ -25,10 +26,45 @@ import java.util.HashMap;
 
 public class WebConfig implements WebFluxConfigurer {
 
+    /**
+     * обязательная конфигурация шаблонов
+     */
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.viewResolver(viewResolver());
+    }
+
+    @Bean
+    public ClassLoaderTemplateResolver templateResolver() {
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setPrefix("templates/");
+        templateResolver.setCacheable(false);
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode("HTML");
+        templateResolver.setCharacterEncoding("UTF-8");
+        return templateResolver;
+    }
+
+    @Bean
+    public ISpringWebFluxTemplateEngine templateEngine() {
+        SpringWebFluxTemplateEngine  templateEngine = new SpringWebFluxTemplateEngine();
+        templateEngine.addTemplateResolver(new UrlTemplateResolver());
+//                    templateEngine.addDialect(new SpringSecurityDialect());
+        templateEngine.setTemplateResolver(templateResolver());
+        return templateEngine;
+    }
+
+    @Bean
+    public ViewResolver viewResolver() {
+        ThymeleafReactiveViewResolver viewResolver = new ThymeleafReactiveViewResolver();
+        viewResolver.setTemplateEngine(templateEngine());
+        return viewResolver;
+    }
+
 //    @Override
 //    public void addResourceHandlers(ResourceHandlerRegistry registry) {
 //        registry.addResourceHandler("/resources/**")
-//                .addResourceLocations("/public", "classpath:/static/");
+//                .addResourceLocations("classpath:/static/", "classpath:/templates/");
 //    }
 
     @Bean
@@ -46,33 +82,5 @@ public class WebConfig implements WebFluxConfigurer {
                 .paths(PathSelectors.any())
                 .build();
 
-    }
-
-    @Bean
-    public WebClient baseWebClient() {
-        return WebClient
-                .builder()
-                .baseUrl("http://localhost:8080")
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
-    }
-
-    @Bean
-    public Token getToken() {
-        final HashMap<String, String> map = new HashMap<>();
-        map.put("email", "usernew@u.com");
-        map.put("password", "123");
-        final Token tokenS = new Token();
-
-        baseWebClient()
-                .post()
-                .uri("/api/v1/auth/login")
-                .body(BodyInserters.fromValue(map))
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(Token.class)
-                .subscribe(v -> tokenS.setToken(v.getToken()));
-
-        return tokenS;
     }
 }

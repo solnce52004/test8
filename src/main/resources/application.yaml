@@ -34,9 +34,9 @@ spring:
 
   flyway:
     enabled: false
-#    url: jdbc:mysql://localhost:3306/test8_001?characterEncoding=utf8&serverTimezone=UTC
-#    user: ${datasource.username}
-#    password: ${datasource.password}
+    url: jdbc:mysql://localhost:3306/test8_001?characterEncoding=utf8&serverTimezone=UTC
+    user: ${datasource.username}
+    password: ${datasource.password}
 
   security:
     oauth2:
@@ -92,20 +92,23 @@ spring:
         period: 0
       chain:
         cache: false
+      static-locations: classpath:/resources/
 
-#  thymeleaf:
-#    render-hidden-markers-before-checkboxes: true
+  thymeleaf:
+    render-hidden-markers-before-checkboxes: true
+    cache: false
+    mode: HTML
+    reactive:
+     max-chunk-size: 8192
+
+#  mustache:
+#    enabled: true
 #    cache: false
-#    mode: HTML
+#    prefix: classpath:/templates/
 
   devtools:
     restart:
       enabled: true
-
-  mustache:
-    enabled: true
-    cache: false
-    prefix: "classpath:/templates/"
 
 #  h2:
 #    console:
@@ -121,7 +124,6 @@ logging:
         web: DEBUG
         data:
           r2dbc: DEBUG
-      hibernate: INFO
 
 jwt:
   header: "Authorization"
